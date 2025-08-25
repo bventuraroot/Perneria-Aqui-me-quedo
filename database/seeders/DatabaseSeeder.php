@@ -25,9 +25,8 @@ class DatabaseSeeder extends Seeder
             CatListSeeder::class,
             CatDetailsSeeder::class,
             AmbientesSeeder::class,
-            ConfigSeeder::class
-
-
+            ConfigSeeder::class,
+            PerneriaSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 
