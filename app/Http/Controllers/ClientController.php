@@ -209,7 +209,7 @@ class ClientController extends Controller
 
     public function getClientid($id)
     {
-        $Client = Client::join('addresses', 'clients.address_id', '=', 'addresses.id')image.pngimage.png
+        $Client = Client::join('addresses', 'clients.address_id', '=', 'addresses.id')
             ->join('countries', 'addresses.country_id', '=', 'countries.id')
             ->join('departments', 'addresses.department_id', '=', 'departments.id')
             ->join('municipalities', 'addresses.municipality_id', '=', 'municipalities.id')
