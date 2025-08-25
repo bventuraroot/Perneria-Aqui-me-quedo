@@ -1,0 +1,74 @@
+version: '3.8'
+services:
+  app:
+    image: php:8.2-apache
+    container_name: perneria-app
+    restart: unless-stopped
+    ports:
+      - "8002:80"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - perneria
+    depends_on:
+      - db
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    command: >
+      sh -c "a2enmod rewrite &&
+             sed -ri -e 's!/var/www/html!$${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf &&
+             sed -ri -e 's!/var/www/!$${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf &&
+             docker-php-ext-install pdo pdo_mysql &&
+             apache2-foreground"
+
+  db:
+    image: mysql:8.0
+    container_name: perneria-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-perneria_aqui_me_quedo}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_USER: perneria_user
+      MYSQL_PASSWORD: perneria_pass
+    volumes:
+      - perneria_dbdata:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    networks:
+      - perneria
+    command: --default-authentication-plugin=mysql_native_password
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: perneria-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_PASSWORD:-root}
+    networks:
+      - perneria
+    depends_on:
+      - db
+
+  redis:
+    image: redis:7-alpine
+    container_name: perneria-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    networks:
+      - perneria
+    volumes:
+      - perneria_redis_data:/data
+
+networks:
+  perneria:
+    driver: bridge
+
+volumes:
+  perneria_dbdata:
+  perneria_redis_data:

@@ -82,6 +82,8 @@ El sistema está configurado para enviar correos desde:
 
 ## Próximos Pasos
 
+### Opción 1: Instalación Local
+
 1. **Configurar base de datos**:
    ```bash
    # Editar .env con credenciales de tu base de datos
@@ -108,6 +110,33 @@ El sistema está configurado para enviar correos desde:
    ```bash
    php artisan serve
    ```
+
+### Opción 2: Instalación con Docker (Recomendado)
+
+1. **Ejecutar script automático**:
+   ```bash
+   chmod +x docker-start-perneria.sh
+   ./docker-start-perneria.sh
+   ```
+
+2. **Acceder a la aplicación**:
+   - **Aplicación**: http://localhost:8002
+   - **PHPMyAdmin**: http://localhost:8081
+   - **Credenciales**: admin@perneriaaquimequedo.com / password
+
+3. **Comandos Docker útiles**:
+   ```bash
+   # Ver logs
+   docker-compose -f docker-compose-perneria.yml logs -f app
+   
+   # Entrar al contenedor
+   docker-compose -f docker-compose-perneria.yml exec app bash
+   
+   # Detener servicios
+   docker-compose -f docker-compose-perneria.yml down
+   ```
+
+**Ver documentación completa de Docker**: `README-DOCKER-PERNERIA.md`
 
 ## Credenciales de Acceso
 
