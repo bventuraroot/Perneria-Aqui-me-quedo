@@ -17,6 +17,9 @@
   <link rel="canonical" href="{{ config('variables.productPage') ? config('variables.productPage') : '' }}">
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+  <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ asset('assets/img/favicon/favicon.png') }}" type="image/png">
+<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
 
 
