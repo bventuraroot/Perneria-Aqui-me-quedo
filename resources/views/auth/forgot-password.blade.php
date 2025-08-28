@@ -1,54 +1,36 @@
-@php
-    $customizerHidden = 'customizer-hide';
-@endphp
+<x-guest-layout>
+    <div class="flex flex-col justify-center items-center min-h-screen bg-gray-50">
+        <div class="p-6 mt-12 w-full max-w-sm bg-white rounded-md border border-gray-200">
+            <h2 class="mb-1 text-xl font-semibold text-center text-gray-800">¿Olvidaste tu contraseña?</h2>
+            <div class="mb-6 text-sm text-center text-gray-500">
+                No hay problema. Solo proporciona tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+            </div>
 
-@extends('layouts/layoutMaster')
+            <!-- Session Status -->
+            <x-auth-session-status class="mb-4" :status="session('status')" />
 
-@section('title', 'Restablecer contraseña')
+            <form method="POST" action="{{ route('password.email') }}">
+                @csrf
 
-@section('page-style')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
-@endsection
-
-@section('content')
-    <div class="container-xxl">
-        <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class="py-4 authentication-inner">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="mt-2 mb-4 app-brand justify-content-center">
-                            <a href="{{ url('/') }}" class="gap-2 app-brand-link">
-                                <span class="app-brand-logo">@include('_partials.macros', [
-                                    'height' => 30,
-                                    'withbg' => 'fill: #fff;',
-                                ])</span>
-                            </a>
-                        </div>
-                        <h4 class="pt-1 mb-1 app-brand justify-content-center">¿Olvidaste tu contraseña?</h4>
-                        <p class="mb-4 text-center">Ingresa tu correo y te enviaremos un enlace para restablecerla.</p>
-
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        <form method="POST" action="{{ route('password.email') }}">
-                            @csrf
-
-                            <div class="mb-3">
-                                <x-input-label for="email" :value="__('Correo electrónico')" />
-                                <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus />
-                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                            </div>
-
-                            <x-primary-button class="btn btn-primary d-grid w-100">
-                                {{ __('Enviar enlace de restablecimiento') }}
-                            </x-primary-button>
-                        </form>
-                    </div>
+                <!-- Email Address -->
+                <div class="mb-4">
+                    <x-input-label for="email" :value="__('Correo electrónico')" />
+                    <x-text-input id="email" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" type="email" name="email" :value="old('email')" required autofocus />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
+
+                <div class="flex items-center justify-end mt-4">
+                    <x-primary-button class="justify-center w-full">
+                        Enviar enlace de restablecimiento
+                    </x-primary-button>
+                </div>
+            </form>
+
+            <div class="mt-4 text-center">
+                <a href="{{ route('login') }}" class="text-sm text-indigo-600 hover:text-indigo-500">
+                    Volver al inicio de sesión
+                </a>
             </div>
         </div>
     </div>
-@endsection
+</x-guest-layout>
