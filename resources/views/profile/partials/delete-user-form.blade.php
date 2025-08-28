@@ -1,55 +1,43 @@
-<section class="space-y-6">
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Delete Account') }}
-        </h2>
+<div class="mb-4">
+    <p class="text-muted">
+        <i class="ti ti-alert-triangle me-1"></i>
+        Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán eliminados permanentemente. Antes de eliminar tu cuenta, descarga cualquier dato o información que desees conservar.
+    </p>
+</div>
 
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
-        </p>
-    </header>
+<div class="alert alert-danger">
+    <i class="ti ti-exclamation-circle me-2"></i>
+    <strong>¡Advertencia!</strong> Esta acción no se puede deshacer.
+</div>
 
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+<form id="delete-user-form" method="post" action="{{ route('profile.destroy') }}" class="space-y-4">
+    @csrf
+    @method('delete')
 
-    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
-            @csrf
-            @method('delete')
+    <div class="mb-3">
+        <label for="password" class="form-label">
+            <i class="ti ti-lock me-1"></i>
+            Contraseña para Confirmar
+        </label>
+        <input type="password"
+               id="password"
+               name="password"
+               class="form-control @error('password', 'userDeletion') is-invalid @enderror"
+               placeholder="Ingresa tu contraseña para confirmar"
+               required>
+        @error('password', 'userDeletion')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+        <div class="form-text">
+            <i class="ti ti-info-circle me-1"></i>
+            Ingresa tu contraseña actual para confirmar que deseas eliminar tu cuenta permanentemente.
+        </div>
+    </div>
 
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Are you sure you want to delete your account?') }}
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-            </p>
-
-            <div class="mt-6">
-                <x-input-label for="password" value="Password" class="sr-only" />
-
-                <x-text-input
-                    id="password"
-                    name="password"
-                    type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="Password"
-                />
-
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
-            </div>
-
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-danger-button class="ml-3">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
-            </div>
-        </form>
-    </x-modal>
-</section>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-danger" onclick="confirmDeleteAccount()">
+            <i class="ti ti-trash me-1"></i>
+            Eliminar Cuenta
+        </button>
+    </div>
+</form>
