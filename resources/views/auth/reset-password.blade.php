@@ -1,35 +1,61 @@
-<x-guest-layout>
-    <div class="flex flex-col justify-center items-center min-h-screen bg-gray-50">
-        <div class="p-6 mt-12 w-full max-w-sm bg-white rounded-md border border-gray-200">
-            <h2 class="mb-1 text-xl font-semibold text-center text-gray-800">Restablecer contraseña</h2>
-            <p class="mb-6 text-sm text-center text-gray-500">Ingresa tu nueva contraseña para tu cuenta.</p>
-            <form method="POST" action="{{ route('password.store') }}">
-                @csrf
+@php
+    $customizerHidden = 'customizer-hide';
+@endphp
 
-                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+@extends('layouts/layoutMaster')
 
-                <div class="mb-4">
-                    <x-input-label for="email" :value="__('Correo electrónico')" />
-                    <x-text-input id="email" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" type="email" name="email" :value="old('email', $request->email)" required autofocus />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+@section('title', 'Restablecer contraseña')
+
+@section('page-style')
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
+@endsection
+
+@section('content')
+    <div class="container-xxl">
+        <div class="authentication-wrapper authentication-basic container-p-y">
+            <div class="py-4 authentication-inner">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mt-2 mb-4 app-brand justify-content-center">
+                            <a href="{{ url('/') }}" class="gap-2 app-brand-link">
+                                <span class="app-brand-logo">@include('_partials.macros', [
+                                    'height' => 30,
+                                    'withbg' => 'fill: #fff;',
+                                ])</span>
+                            </a>
+                        </div>
+                        <h4 class="pt-1 mb-1 app-brand justify-content-center">Restablecer contraseña</h4>
+                        <p class="mb-4 text-center">Ingresa tu nueva contraseña para tu cuenta.</p>
+
+                        <form method="POST" action="{{ route('password.store') }}">
+                            @csrf
+                            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+                            <div class="mb-3">
+                                <x-input-label for="email" :value="__('Correo electrónico')" />
+                                <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email', $request->email)" required autofocus />
+                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                            </div>
+
+                            <div class="mb-3">
+                                <x-input-label for="password" :value="__('Nueva contraseña')" />
+                                <x-text-input id="password" class="form-control" type="password" name="password" required />
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            </div>
+
+                            <div class="mb-4">
+                                <x-input-label for="password_confirmation" :value="__('Confirmar contraseña')" />
+                                <x-text-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" required />
+                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                            </div>
+
+                            <x-primary-button class="btn btn-primary d-grid w-100">
+                                {{ __('Restablecer contraseña') }}
+                            </x-primary-button>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="mb-4">
-                    <x-input-label for="password" :value="__('Nueva contraseña')" />
-                    <x-text-input id="password" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" type="password" name="password" required />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
-
-                <div class="mb-6">
-                    <x-input-label for="password_confirmation" :value="__('Confirmar contraseña')" />
-                    <x-text-input id="password_confirmation" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" type="password" name="password_confirmation" required />
-                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                </div>
-
-                <x-primary-button class="justify-center w-full">
-                    {{ __('Restablecer contraseña') }}
-                </x-primary-button>
-            </form>
+            </div>
         </div>
     </div>
-</x-guest-layout>
+@endsection
